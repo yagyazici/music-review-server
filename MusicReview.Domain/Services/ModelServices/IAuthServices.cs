@@ -3,7 +3,7 @@ using MusicReview.Domain.Models.AlbumEntities;
 using MusicReview.Domain.Models.Base;
 using MusicReview.DTOs;
 
-namespace MusicReview.Services.ModelServices;
+namespace MusicReview.Domain.Services.ModelServices;
 
 public interface IAuthServices
 {

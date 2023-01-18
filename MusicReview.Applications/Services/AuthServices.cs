@@ -1,8 +1,6 @@
 using MusicReview.Auth;
 using MusicReview.Domain.Services;
-using MusicReview.Services.ModelServices;
 using MusicReview.Domain.Services.HubServices;
-using MusicReview.Domain.UserServices;
 using MusicReview.Applications.Applications;
 using MusicReview.Domain.Models.Base;
 using MusicReview.Domain.Models.Responses;
@@ -10,6 +8,7 @@ using AutoMapper;
 using MusicReview.DTOs;
 using MongoDB.Driver;
 using MusicReview.Domain.Models.AlbumEntities;
+using MusicReview.Domain.Services.ModelServices;
 
 namespace MusicReview.Applications.Services;
 

@@ -9,7 +9,7 @@ public interface IGenericMongoRepository<TEntity> where TEntity : MongoEntity
     Task<TEntity> GetByIdAsync(string id);
     Task<List<TEntity>> GetAllAsync();
     Task<List<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate);
-    Task<bool> RemoveBulkAsync(List<string> ids);
+    Task<bool> RemoveAsync(string id);
     Task UpdateAsync(TEntity entity);
     Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
 }

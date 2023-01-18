@@ -1,12 +1,14 @@
 using AutoMapper;
-using MongoDB.Bson;
 using MusicReview.Applications.Applications;
 using MusicReview.Auth;
 using MusicReview.Domain.Models.Base;
 using MusicReview.Domain.Models.Responses;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.Services.HubServices;
+using MusicReview.Domain.Services.ModelServices;
 using MusicReview.DTOs;
+
+namespace MusicReview.Applications.Services;
 
 public class MusicAuthService : IMusicAuthService
 {
@@ -33,6 +35,16 @@ public class MusicAuthService : IMusicAuthService
         await _mongoRepository.UpdateAsync(user);
         await _userHubService.UserFavoriteAlbumsUpdatedMessageAsync(user.Id);
         return new Success(true, "Album(s) appended");
+    }
+
+    public async Task<int> GetAlbumLikedCount(string albumId)
+    {
+        var users = await _mongoRepository.FilterAsync(
+            user => user.LikedAlbums.Where(
+                album => album.id == albumId
+            ).Any()
+        );
+        return users.Count();
     }
 
     public async Task<Response> ToggleUserFollowedUser(UserProfileDTO followedUser)
@@ -82,6 +94,8 @@ public class MusicAuthService : IMusicAuthService
         await _mongoRepository.UpdateAsync(user);
         return new Success(true, check ? "removed" : "liked");
     }
+
+    
 
     private async Task<string> SendNotification(string toUserId, UserProfileDTO fromUser, string notifType)
     {

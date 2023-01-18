@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using MusicReview.Applications.Applications;
 using MusicReview.Applications.Services;
-using MusicReview.Services.ModelServices;
+using MusicReview.Domain.Services.ModelServices;
 
 namespace MusicReview.Applications;
 

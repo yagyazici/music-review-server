@@ -45,12 +45,13 @@ public class GenericMongoRepository<TEntity> : IGenericMongoRepository<TEntity> 
         return await _collection.Find(entity => entity.Id == id).FirstOrDefaultAsync();
     }
 
-    public async Task<bool> RemoveBulkAsync(List<string> ids)
+    public async Task<bool> RemoveAsync(string id)
     {
-        var filter = Builders<TEntity>.Filter.In(entity => entity.Id, ids);
-        var result = await _collection.DeleteManyAsync(filter);
-        return result.DeletedCount > 0;
+        var filter = await _collection.DeleteOneAsync(entity => entity.Id == id);
+        return filter.DeletedCount > 0;
     }
+    
+
 
     public async Task UpdateAsync(TEntity entity)
     {

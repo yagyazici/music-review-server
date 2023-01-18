@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using MusicReview.Services.ModelServices;
 using Microsoft.AspNetCore.Authorization;
 using MusicReview.Domain.Models.Base;
-using MusicReview.Applications.Applications;
 using System.Net.Http.Headers;
 using MusicReview.Domain.Models.Responses;
 using MusicReview.DTOs;
 using MusicReview.Domain.Models.AlbumEntities;
 using MusicReview.Auth;
+using MusicReview.Domain.Services.ModelServices;
 
 namespace MusicReview.ApiService.Controllers;
 
@@ -17,16 +16,13 @@ public class UserAuthController : ControllerBase
 {
     private readonly IAuthServices _authService;
     private readonly IMusicAuthService _musicAuthService;
-    private readonly AuthApplications _authApplications;
 
     public UserAuthController(
         IAuthServices authService,
-        IMusicAuthService musicAuthService,
-        AuthApplications authApplications)
+        IMusicAuthService musicAuthService)
     {
         _authService = authService;
         _musicAuthService = musicAuthService;
-        _authApplications = authApplications;
     }
 
     #region PutRequests
