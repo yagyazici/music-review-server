@@ -4,7 +4,7 @@ using MusicReview.Domain.UserServices;
 using Newtonsoft.Json;
 using System.Security.Claims;
 
-namespace MusicReview.Infrastructure.UserServices;
+namespace MusicReview.Infrastructure.Services.UserServices;
 
 public class HttpUserService: IHttpUserService
 {

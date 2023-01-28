@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using MongoDB.Driver;
 using MusicReview.Domain.Models.Base;
 
 namespace MusicReview.Domain.Services;
@@ -12,4 +13,5 @@ public interface IGenericMongoRepository<TEntity> where TEntity : MongoEntity
     Task<bool> RemoveAsync(string id);
     Task UpdateAsync(TEntity entity);
     Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
+    Task<List<TEntity>> Filter(FilterDefinition<TEntity> filter);
 }

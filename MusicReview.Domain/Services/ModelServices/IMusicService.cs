@@ -5,7 +5,7 @@ namespace MusicReview.Domain.Services.ModelServices;
 
 public interface IMusicService
 {
-    Task<Response> Update(string id, int newRate, string newThoughts);
+    Task<Response> Put(string id, int newRate, string newThoughts);
     Task<Review> Get(string id);
     Task<List<Review>> GetAlbumReviews(string albumId);
     Task<List<Review>> GetUserAlbumReviews(string userId);

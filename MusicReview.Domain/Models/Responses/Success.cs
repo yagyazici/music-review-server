@@ -4,7 +4,7 @@ namespace MusicReview.Domain.Models.Responses;
 
 public class Success: Response
 {
-    public Success(object response, string responseText) : base(responseText)
+    public Success(object response, string responseText, bool status = true) : base(responseText, status)
     {
         this.response = response;
     }

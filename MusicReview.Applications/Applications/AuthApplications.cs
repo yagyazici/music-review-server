@@ -60,7 +60,7 @@ public class AuthApplications
             passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         }
     }
-
+    
     public RefreshToken GenerateRefreshToken()
     {
         var refreshToken = new RefreshToken {
@@ -116,6 +116,12 @@ public class AuthApplications
             errorList.Add("This email already in use!");
         }
         return errorList;
+    }
+
+    public string UpdatePasswordSendError(string password)
+    {
+        if (!this.PasswordRestrictions(password)) return "Invalid Password";
+        return "true";
     }
 
     public Task<User> GetCurrentUser()

@@ -63,7 +63,9 @@ public class MusicService : IMusicService
     {
         var user = await _authApplications.GetCurrentUser();
         var ids = user.Followings.Select(user => user.Id).ToList();
-        var feed = await _mongoRepository.FilterAsync(review => ids.Contains(review.Id));
+        var feed = await _mongoRepository.Filter(
+            Builders<Review>.Filter.In(review => review.Author.Id, ids)
+        );
         return feed.ToList();
     }
 
@@ -74,7 +76,7 @@ public class MusicService : IMusicService
         return new Success(review.AlbumName, "review posted");
     }
 
-    public async Task<Response> Update(string id, int newRate, string newThoughts)
+    public async Task<Response> Put(string id, int newRate, string newThoughts)
     {
         var user = await _authApplications.GetCurrentUser();
         var review = await _mongoRepository.GetByIdAsync(id);

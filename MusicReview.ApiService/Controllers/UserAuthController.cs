@@ -29,16 +29,16 @@ public class UserAuthController : ControllerBase
     [HttpPut, Authorize]
     public async Task<Response> UpdateUser(string username, string bio, string birthDate, string email) =>
         await _authService.UpdateUser(username, bio, birthDate, email);
-    
+
     [HttpPut, DisableRequestSizeLimit, Authorize]
     public async Task<Response> UploadProfileImage()
     {
         try
         {
             var file = Request.Form.Files[0];
-            var folderName = Path.Combine("Recourses","Images");
+            var folderName = Path.Combine("Recourses", "Images");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-            if (file.Length > 0 )
+            if (file.Length > 0)
             {
                 var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                 var fullPath = Path.Combine(pathToSave, fileName);
@@ -54,29 +54,37 @@ public class UserAuthController : ControllerBase
             else
             {
                 return new Fail(false, "error");
-            } 
+            }
         }
         catch (System.Exception)
-        {   
+        {
             return new Fail(false, "error");
         }
     }
+
+    [HttpPut, Authorize]
+    public async Task<Response> UpdatePassword(string currentPassword, string newPassword) =>
+        await _authService.UpdatePassword(currentPassword, newPassword);
     #endregion
 
     #region GetRequests
 
     [HttpGet, Authorize]
     public async Task<CurrentUserDTO> GetMeUser() => await _authService.GetMeUser();
-    
+
     [HttpGet]
     public async Task<UserProfileDTO> GetUserProfile(string userId) => await _authService.GetUserProfile(userId);
 
     [HttpGet]
-    public async Task<List<UserProfileDTO>> SearchUserProfile(string username) => 
+    public async Task<List<UserProfileDTO>> SearchUserProfile(string username) =>
         await _authService.SearchUserProfile(username);
 
     [HttpGet, Authorize]
     public async Task<List<Album>> GetCurrentUserFavoriteAlbums() => await _authService.GetCurrentUserFavoriteAlbums();
+
+    [HttpGet, Authorize]
+    public async Task<List<Album>> GetUsersFavoriteAlbums(string userId) =>
+        await _authService.GetUsersFavoriteAlbums(userId);
 
     [HttpGet, Authorize]
     public async Task<bool> CheckUserAlbumLiked(string albumId) => await _authService.CheckUserAlbumLiked(albumId);
@@ -111,20 +119,25 @@ public class UserAuthController : ControllerBase
     public async Task<Response> Login(UserDTO request) => await _authService.Login(request);
 
     [HttpPost]
-    public async Task<Response> RefreshToken(string refreshToken, string userId) => 
+    public async Task<Response> RefreshToken(string refreshToken, string userId) =>
         await _authService.RefreshToken(refreshToken, userId);
 
     [HttpPost, Authorize]
-    public async Task<Response> AddUserFavoriteAlbums(List<AlbumDTO> favoriteAlbums) => 
+    public async Task<Response> AddUserFavoriteAlbums(List<AlbumDTO> favoriteAlbums) =>
         await _musicAuthService.AddUserFavoriteAlbums(favoriteAlbums);
 
     [HttpPost, Authorize]
-    public async Task<Response> ToggleUserFollowedUser(UserProfileDTO followedUser) => 
-        await _musicAuthService.ToggleUserFollowedUser(followedUser);
+    public async Task<Response> ToggleUserFollowedUser(UserProfileDTO followedUser) =>
+        await _authService.ToggleUserFollowedUser(followedUser);
 
     [HttpPost, Authorize]
-    public async Task<Response> ToggleUserLikedAlbum(AlbumDTO likedAlbum) => 
+    public async Task<Response> ToggleUserLikedAlbum(AlbumDTO likedAlbum) =>
         await _musicAuthService.ToggleUserLikedAlbum(likedAlbum);
 
+    #endregion
+
+    #region DeleteRequests
+    [HttpDelete, Authorize]
+    public async Task<Response> DeleteProfileImage() => await _authService.DeleteProfileImage();
     #endregion
 }

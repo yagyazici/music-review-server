@@ -24,8 +24,8 @@ public class MusicReviewController : ControllerBase
 
     #region PutRequests
     [HttpPut]
-    public async Task<Response> Update(string id, int newRate, string newThoughts) =>
-        await _musicService.Update(id, newRate, newThoughts);
+    public async Task<Response> Put(string id, int newRate, string newThoughts) =>
+        await _musicService.Put(id, newRate, newThoughts);
     #endregion
 
     #region GetRequests

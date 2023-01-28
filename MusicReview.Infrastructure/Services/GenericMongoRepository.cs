@@ -5,7 +5,7 @@ using MusicReview.Domain.Models.Base;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.Settings;
 
-namespace MusicReview.Infrastructure.Services.ModelServices;
+namespace MusicReview.Infrastructure.Services;
 
 public class GenericMongoRepository<TEntity> : IGenericMongoRepository<TEntity> where TEntity : MongoEntity
 {
@@ -30,6 +30,11 @@ public class GenericMongoRepository<TEntity> : IGenericMongoRepository<TEntity> 
         return await _collection.Find(predicate).AnyAsync();
     }
 
+    public async Task<List<TEntity>> Filter(FilterDefinition<TEntity> filter)
+    {
+        return await _collection.FindSync(filter).ToListAsync();
+    }
+
     public async Task<List<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate)
     {
         return await _collection.Find(predicate).ToListAsync();
@@ -51,10 +56,10 @@ public class GenericMongoRepository<TEntity> : IGenericMongoRepository<TEntity> 
         return filter.DeletedCount > 0;
     }
     
-
-
     public async Task UpdateAsync(TEntity entity)
     {
         await _collection.ReplaceOneAsync(x => x.Id == entity.Id, entity);
     }
+
+    
 }

@@ -25,7 +25,6 @@ builder.Services.Configure<TokenSettings>(
 builder.Services.AddInfrastructureServices();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddApplicationsServices();
-builder.Services.AddSignalRServices();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -67,8 +66,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
-    policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials()
+    policy
+    .WithOrigins("http://localhost:4200", "https://localhost:4200")
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()
 ));
+
+builder.Services.AddSignalRServices();
 
 var app = builder.Build();
 
