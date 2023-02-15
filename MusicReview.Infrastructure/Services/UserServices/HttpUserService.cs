@@ -14,24 +14,15 @@ public class HttpUserService: IHttpUserService
     {
         _httpContextAccessor = httpContextAccessor;
     }
-    
-    public User GetCurrentUser(){
-        var result = string.Empty;
-        if (_httpContextAccessor.HttpContext is not null)
-        {
-            result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.UserData);
-        }
-        return JsonConvert.DeserializeObject<User>(result);
-    }
 
     public string GetCurrentUserId()
     {
         var result = string.Empty;
         if (_httpContextAccessor.HttpContext is not null)
         {
-            result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.UserData);
+            result = _httpContextAccessor.HttpContext.User.FindFirstValue("Id");
         }
-        return JsonConvert.DeserializeObject<User>(result).Id;
+        return result;
     }
 }
 

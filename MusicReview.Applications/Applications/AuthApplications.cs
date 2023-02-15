@@ -33,9 +33,7 @@ public class AuthApplications
     {
         string userStr = JsonConvert.SerializeObject(user);
         List<Claim> claims = new(){
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, "User"),
-            new Claim(ClaimTypes.UserData, userStr)
+            new Claim("Id", user.Id)
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
             _tokenSettings.Value.Token

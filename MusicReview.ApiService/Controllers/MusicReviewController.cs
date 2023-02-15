@@ -51,6 +51,9 @@ public class MusicReviewController : ControllerBase
     #region PostRequests
     [HttpPost, Authorize]
     public async Task<Response> Post(Review review) => await _musicService.Post(review);
+    
+    [HttpPost, Authorize]
+    public async Task<Response> ToggleLikedReview(string reviewId) => await _musicService.ToggleLikedReview(reviewId);
     #endregion
 
     #region DeleteRequests

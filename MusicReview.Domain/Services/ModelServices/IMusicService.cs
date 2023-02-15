@@ -12,5 +12,6 @@ public interface IMusicService
     Task<bool> AlbumReviewCheck(string albumId);
     Task<List<Review>> GetUserFeed();
     Task<Response> Post(Review review);
+    Task<Response> ToggleLikedReview(string reviewId);
     Task<Response> Delete(string id);
 }
