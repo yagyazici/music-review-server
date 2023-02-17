@@ -29,11 +29,12 @@ public class AuthApplications
         _tokenSettings = tokenSettings;
         _httpUserService = httpUserService;
     }
-    public object CreateToken(User user)
+    public AuthToken CreateToken(User user)
     {
         string userStr = JsonConvert.SerializeObject(user);
         List<Claim> claims = new(){
             new Claim("Id", user.Id)
+            
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
             _tokenSettings.Value.Token
@@ -47,7 +48,7 @@ public class AuthApplications
             notBefore: DateTime.Now
         );
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-        return new { jwt, expires };
+        return new AuthToken(jwt, expires);
     }
 
     public void CreatePassword(string password, out byte[] passwordHash, out byte[] passwordSalt)

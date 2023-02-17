@@ -39,13 +39,13 @@ public class AuthServices : IAuthServices
     {
         var user = await _authApplications.GetCurrentUser();
         List<string> errorList = _authApplications.UpdateUserSendErrorList(user, username, email);
-        if (errorList.Count > 0) return new Fail(errorList, "Error occured while updating.");
+        if (errorList.Count > 0) return new Fail<List<string>>(errorList, "Error occured while updating.");
         user.Username = username;
         user.Bio = bio;
         user.BirthDate = DateTime.ParseExact(birthDate, "dd-MM-yyyy", null);
         user.Email = email;
         await _mongoRepository.UpdateAsync(user);
-        return new Success(user.Username == username, "user updated");
+        return new Success<bool>(user.Username == username, "user updated");
     }
 
     public async Task<CurrentUserDTO> GetMeUser()
@@ -126,7 +126,7 @@ public class AuthServices : IAuthServices
             );
             await _mongoRepository.UpdateAsync(currentUser);
             await _mongoRepository.UpdateAsync(otherUser);
-            return new Success(true, "unfollowed");
+            return new Success<bool>(true, "unfollowed");
         }
 
         currentUser.Followings.Add(followedUser);
@@ -145,10 +145,12 @@ public class AuthServices : IAuthServices
         await _hubService.UserFollowedUserMessageAsync(userIds);
 
         // TODO
-        await _notificationService.SendNotification(followedUser.Id, currentUserDto, "follower");
-        await _hubService.UserSendNotificitionMessageAsync(followedUser.Id);
+        if (followedUserId != currentUserId)
+        {
+            await _notificationService.SendNotification(followedUserId, currentUserDto, "follower");
+        }
 
-        return new Success(true, "followed");
+        return new Success<bool>(true, "followed");
     }
 
     public async Task<List<UserProfileDTO>> GetUserFollowings(string userId)
@@ -186,7 +188,7 @@ public class AuthServices : IAuthServices
     public async Task<Response> Register(UserDTO request)
     {
         List<string> errorList = _authApplications.RegisterSendErrorList(request, request.Username, request.Email, request.Password);
-        if (errorList.Count > 0) return new Fail(errorList, "Error(s) occured");
+        if (errorList.Count > 0) return new Fail<List<string>>(errorList, "Error(s) occured");
         _authApplications.CreatePassword(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
         var user = new User
         {
@@ -196,24 +198,25 @@ public class AuthServices : IAuthServices
             Email = request.Email,
         };
         await _mongoRepository.AddAsync(user);
-        return new Success(user, "successful register");
+        return new Success<User>(user, "successful register");
     }
 
     public async Task<Response> Login(UserDTO request)
     {
         var usernameCheck = await _mongoRepository.FilterAsync(user => user.Username == request.Username);
-        if (!usernameCheck.Any()) return new Fail("Wrong username", "Error occured");
+        if (!usernameCheck.Any()) return new Fail<string>("Wrong username", "Error occured");
         User user = _mongoRepository.FilterAsync(user => user.Username == request.Username).Result.FirstOrDefault();
         if (!_authApplications.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
         {
-            return new Fail("Wrong password", "Error occured");
+            return new Fail<string>("Wrong password", "Error occured");
         }
         var authToken = _authApplications.CreateToken(user);
         var currentUser = _mapper.Map<CurrentUserDTO>(user);
+        // 
         var refreshToken = _authApplications.GenerateRefreshToken();
         _authApplications.SetRefreshToken(refreshToken, user);
         await _mongoRepository.UpdateAsync(user);
-        return new Success(new { authToken, refreshToken, currentUser }, "successful login");
+        return new Success<LoginResponse>(new LoginResponse(authToken, refreshToken, currentUser), "successful login");
     }
 
     public async Task<Response> UpdatePassword(string currentPassword, string newPassword)
@@ -221,29 +224,29 @@ public class AuthServices : IAuthServices
         var user = await _authApplications.GetCurrentUser();
         if ((currentPassword == null) || (newPassword == null))
         {
-            return new Fail("Passwords cant be null", "Error occured");
+            return new Fail<string>("Passwords cant be null", "Error occured");
         }
         if (!_authApplications.VerifyPasswordHash(currentPassword, user.PasswordHash, user.PasswordSalt))
         {
-            return new Fail("Old password didn't match", "Error occured");
+            return new Fail<string>("Old password didn't match", "Error occured");
         }
         if (!_authApplications.UpdatePasswordSendError(newPassword).Equals("true"))
         {
-            return new Fail("Invalid password.", "Error occured");
+            return new Fail<string>("Invalid password.", "Error occured");
         }
         _authApplications.CreatePassword(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
         user.PasswordHash = passwordHash;
         user.PasswordSalt = passwordSalt;
         await _mongoRepository.UpdateAsync(user);
-        return new Success(newPassword, "password changed successfully");
+        return new Success<string>(newPassword, "password changed successfully");
     }
 
     public async Task<Response> RefreshToken(string refreshToken, string userId)
     {
         var user = await _mongoRepository.GetByIdAsync(userId);
-        if (!user.RefreshToken.Equals(refreshToken)) return new Fail(false, "Invalid refresh token");
+        if (!user.RefreshToken.Equals(refreshToken)) return new Fail<bool>(false, "Invalid refresh token");
         var token = _authApplications.CreateToken(user);
-        return new Success(token, "refresh token created");
+        return new Success<AuthToken>(token, "refresh token created");
     }
 
     public async Task<Response> UploadProfileImage(string databasePath)
@@ -251,7 +254,7 @@ public class AuthServices : IAuthServices
         var currentUser = await _authApplications.GetCurrentUser();
         currentUser.ProfilePicture = databasePath;
         await _mongoRepository.UpdateAsync(currentUser);
-        return new Success(currentUser, "profile picture updated");
+        return new Success<User>(currentUser, "profile picture updated");
     }
 
     public async Task<Response> DeleteProfileImage()
@@ -267,16 +270,16 @@ public class AuthServices : IAuthServices
             {
                 currentUser.ProfilePicture = "";
                 await _mongoRepository.UpdateAsync(currentUser);
-                return new Success(currentUser.Id, "profile picture deleted");
+                return new Success<string>(currentUser.Id, "profile picture deleted");
             }
             else
             {
-                return new Fail("file does not exists", "error");
+                return new Fail<string>("file does not exists", "error");
             }
         }
         catch (Exception ex)
         {
-            return new Fail(ex.Message, "error");
+            return new Fail<string>(ex.Message, "error");
         }
     }
 }

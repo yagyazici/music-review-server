@@ -34,7 +34,7 @@ public class MusicAuthService : IMusicAuthService
         user.FavoriteAlbums = favoriteAlbums;
         await _mongoRepository.UpdateAsync(user);
         await _userHubService.UserFavoriteAlbumsUpdatedMessageAsync(user.Id);
-        return new Success(true, "Album(s) appended");
+        return new Success<bool>(true, "Album(s) appended");
     }
 
     public async Task<int> GetAlbumLikedCount(string albumId)
@@ -51,9 +51,11 @@ public class MusicAuthService : IMusicAuthService
     {
         var user = await _authApplications.GetCurrentUser();
         var check = user.LikedAlbums.Where(album => album.id == likedAlbum.id).Any();
-        if (check) user.LikedAlbums.Remove(likedAlbum); 
+        if (check) user.LikedAlbums.Remove(
+            user.LikedAlbums.Where(album => album.id == likedAlbum.id).FirstOrDefault()
+        ); 
         else user.LikedAlbums.Add(likedAlbum);
         await _mongoRepository.UpdateAsync(user);
-        return new Success(true, check ? "removed" : "liked");
+        return new Success<bool>(true, check ? "removed" : "liked");
     }
 }

@@ -53,12 +53,12 @@ public class UserAuthController : ControllerBase
             }
             else
             {
-                return new Fail(false, "error");
+                return new Fail<bool>(false, "error");
             }
         }
         catch (System.Exception)
         {
-            return new Fail(false, "error");
+            return new Fail<bool>(false, "error");
         }
     }
 

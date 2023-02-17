@@ -54,9 +54,9 @@ public class MusicService : IMusicService
         {
             await _mongoRepository.RemoveAsync(review.Id);
             await _musicHubService.MusicReviewDeletedMessageAsync(user.Id);
-            return new Success(review.AlbumName, "review deleted");
+            return new Success<string>(review.AlbumName, "review deleted");
         }
-        return new Fail(user.Username, "not correct author");
+        return new Fail<string>(user.Username, "not correct author");
     }
 
     public async Task<Review> Get(string id) => await _mongoRepository.GetByIdAsync(id);
@@ -88,20 +88,22 @@ public class MusicService : IMusicService
         {
             review.Likes.Remove(userId);
             await _mongoRepository.UpdateAsync(review);
-            return new Success(review.AlbumName, "removed");
-        }        
+            return new Success<string>(review.AlbumName, "removed");
+        }
         review.Likes.Add(userId);
         await _mongoRepository.UpdateAsync(review);
-        await _notificationService.SendNotification(review.Author.Id, fromUser, "review like");
-        await _hubService.UserSendNotificitionMessageAsync(review.Author.Id);
-        return new Success(review.AlbumName, contains ? "removed" : "added");
+        if (fromUser.Id != review.Author.Id)
+        {
+            await _notificationService.SendNotification(review.Author.Id, fromUser, "review like");
+        }
+        return new Success<string>(review.AlbumName, contains ? "removed" : "added");
     }
 
     public async Task<Response> Post(Review review)
     {
         await _mongoRepository.AddAsync(review);
         await _musicHubService.MusicReviewAddedMessageAsync(review);
-        return new Success(review.AlbumName, "review posted");
+        return new Success<string>(review.AlbumName, "review posted");
     }
 
     public async Task<Response> Put(string id, int newRate, string newThoughts)
@@ -116,8 +118,8 @@ public class MusicService : IMusicService
             review.AlbumThoughts = newThoughts;
             await _mongoRepository.UpdateAsync(review);
             await _musicHubService.MusicReviewUpdateMessageAsync(id);
-            return new Success(review.AlbumName, "updated");
+            return new Success<string>(review.AlbumName, "updated");
         }
-        return new Fail(false, "not correct author");
+        return new Fail<bool>(false, "not correct author");
     }
 }

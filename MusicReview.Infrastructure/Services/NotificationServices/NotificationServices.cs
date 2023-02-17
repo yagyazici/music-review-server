@@ -1,6 +1,7 @@
 using MusicReview.Auth;
 using MusicReview.Domain.NotificationServices;
 using MusicReview.Domain.Services;
+using MusicReview.Domain.Services.HubServices;
 using MusicReview.DTOs;
 
 namespace MusicReview.Infrastructure.Services.NotificationServices;
@@ -8,10 +9,13 @@ namespace MusicReview.Infrastructure.Services.NotificationServices;
 public class NotificationServices : INotificationServices
 {
     private readonly IGenericMongoRepository<User> _mongoRepository;
+    private readonly IUserHubService _hubService;
 
-    public NotificationServices(IGenericMongoRepository<User> mongoRepository)
+
+    public NotificationServices(IGenericMongoRepository<User> mongoRepository, IUserHubService hubService)
     {
         _mongoRepository = mongoRepository;
+        _hubService = hubService;
     }
 
     public int GetUserNotificationCount(User user)
@@ -39,6 +43,7 @@ public class NotificationServices : INotificationServices
         };
         toUser.Notifications.Add(notification);
         await _mongoRepository.UpdateAsync(toUser);
+        await _hubService.UserSendNotificitionMessageAsync(toUserId);
         return "Notification sended";
     }
 }
