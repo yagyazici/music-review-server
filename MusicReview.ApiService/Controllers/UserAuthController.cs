@@ -139,5 +139,12 @@ public class UserAuthController : ControllerBase
     #region DeleteRequests
     [HttpDelete, Authorize]
     public async Task<Response> DeleteProfileImage() => await _authService.DeleteProfileImage();
+
+    [HttpDelete, Authorize]
+    public async Task<Response> DeleteNotification(Notification notification) =>
+        await _authService.DeleteNotification(notification);
+
+    [HttpDelete, Authorize]
+    public async Task<Response> DeleteAllNotifications() => await _authService.DeleteAllNotifications();
     #endregion
 }

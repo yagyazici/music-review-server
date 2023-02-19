@@ -282,4 +282,18 @@ public class AuthServices : IAuthServices
             return new Fail<string>(ex.Message, "error");
         }
     }
+
+    public async Task<Response> DeleteNotification(Notification notification)
+    {
+        var currentUser = await _authApplications.GetCurrentUser();
+        var userNotifs = await _notificationService.DeleteNotification(currentUser, notification);
+        return new Success<List<Notification>>(userNotifs, "notification deleted");
+    }
+
+    public async Task<Response> DeleteAllNotifications()
+    {
+        var currentUser = await _authApplications.GetCurrentUser();
+        await _notificationService.DeleteAllNotification(currentUser);
+        return new Success<List<Notification>>(currentUser.Notifications, "all notifications deleted");
+    }
 }

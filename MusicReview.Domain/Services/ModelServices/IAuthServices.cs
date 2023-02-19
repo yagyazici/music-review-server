@@ -28,4 +28,6 @@ public interface IAuthServices
     Task<Response> Login(UserDTO user);
     Task<Response> RefreshToken(string refreshToken, string userId);
     Task<Response> UpdatePassword(string currentPassword, string newPassword);
+    Task<Response> DeleteNotification(Notification notification);
+    Task<Response> DeleteAllNotifications();
 }
