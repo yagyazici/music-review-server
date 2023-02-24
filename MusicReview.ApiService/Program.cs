@@ -9,24 +9,22 @@ using Swashbuckle.AspNetCore.Filters;
 using MusicReview.Infrastructure;
 using Microsoft.Extensions.FileProviders;
 using MusicReview.Applications;
+using MusicReview.Integration;
+using MusicReview.Integration.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<DatabaseSettings>(
-    builder.Configuration.GetSection("MusicReviewsDB")
-);
-
-builder.Services.Configure<TokenSettings>(
-    builder.Configuration.GetSection("TokenSettings")
-);
+builder.Services.AddSettings(builder);
 
 // Add services to the container.
 
+builder.Services.AddIntegration();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddApplicationsServices();
 
 builder.Services.AddHttpContextAccessor();
+
 
 builder.Services.AddControllers().AddJsonOptions(
     opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null

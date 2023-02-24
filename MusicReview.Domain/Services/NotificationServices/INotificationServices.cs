@@ -1,6 +1,6 @@
 using MusicReview.Auth;
 using MusicReview.Domain.Models.Base;
-using MusicReview.DTOs;
+using MusicReview.Domain.DTOs;
 
 namespace MusicReview.Domain.NotificationServices;
 

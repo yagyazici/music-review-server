@@ -1,6 +1,6 @@
 using MusicReview.Domain.Models.AlbumEntities;
 
-namespace MusicReview.DTOs;
+namespace MusicReview.Domain.DTOs;
 
 public class AlbumDTO
 {

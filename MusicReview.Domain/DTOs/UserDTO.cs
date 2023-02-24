@@ -1,4 +1,4 @@
-namespace MusicReview.DTOs;
+namespace MusicReview.Domain.DTOs;
 
 public class UserDTO
 {

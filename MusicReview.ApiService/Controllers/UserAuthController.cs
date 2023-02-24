@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using MusicReview.Domain.Models.Base;
 using System.Net.Http.Headers;
 using MusicReview.Domain.Models.Responses;
-using MusicReview.DTOs;
+using MusicReview.Domain.DTOs;
 using MusicReview.Domain.Models.AlbumEntities;
 using MusicReview.Auth;
 using MusicReview.Domain.Services.ModelServices;
+using MusicReview.Integration.Services;
 
 namespace MusicReview.ApiService.Controllers;
 
@@ -16,13 +17,16 @@ public class UserAuthController : ControllerBase
 {
     private readonly IAuthServices _authService;
     private readonly IMusicAuthService _musicAuthService;
+    private readonly SpotifyRefreshToken _spotifyRefreshToken;
 
     public UserAuthController(
         IAuthServices authService,
-        IMusicAuthService musicAuthService)
+        IMusicAuthService musicAuthService,
+        SpotifyRefreshToken spotifyRefreshToken)
     {
         _authService = authService;
         _musicAuthService = musicAuthService;
+        _spotifyRefreshToken = spotifyRefreshToken;
     }
 
     #region PutRequests
@@ -146,5 +150,8 @@ public class UserAuthController : ControllerBase
 
     [HttpDelete, Authorize]
     public async Task<Response> DeleteAllNotifications() => await _authService.DeleteAllNotifications();
+
+    [HttpGet]
+    public async Task<string> RefreshToken() => await _spotifyRefreshToken.RefreshToken();
     #endregion
 }

@@ -4,7 +4,7 @@ using MusicReview.Domain.Models.Base;
 using MusicReview.Domain.NotificationServices;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.Services.HubServices;
-using MusicReview.DTOs;
+using MusicReview.Domain.DTOs;
 
 namespace MusicReview.Infrastructure.Services.NotificationServices;
 

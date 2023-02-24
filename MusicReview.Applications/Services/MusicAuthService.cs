@@ -6,7 +6,7 @@ using MusicReview.Domain.Models.Responses;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.Services.HubServices;
 using MusicReview.Domain.Services.ModelServices;
-using MusicReview.DTOs;
+using MusicReview.Domain.DTOs;
 
 namespace MusicReview.Applications.Services;
 
@@ -17,7 +17,8 @@ public class MusicAuthService : IMusicAuthService
     private readonly IMapper _mapper;
     private readonly IUserHubService _userHubService;
 
-    public MusicAuthService(AuthApplications authApplications,
+    public MusicAuthService(
+        AuthApplications authApplications,
         IGenericMongoRepository<User> mongoRepository,
         IMapper mapper,
         IUserHubService userHubService)
@@ -46,7 +47,7 @@ public class MusicAuthService : IMusicAuthService
         );
         return users.Count();
     }
-
+    
     public async Task<Response> ToggleUserLikedAlbum(AlbumDTO likedAlbum)
     {
         var user = await _authApplications.GetCurrentUser();

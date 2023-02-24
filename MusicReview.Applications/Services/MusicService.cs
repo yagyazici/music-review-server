@@ -8,7 +8,7 @@ using MusicReview.Domain.NotificationServices;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.Services.HubServices;
 using MusicReview.Domain.Services.ModelServices;
-using MusicReview.DTOs;
+using MusicReview.Domain.DTOs;
 
 namespace MusicReview.Applications.Services;
 

@@ -1,7 +1,7 @@
 using AutoMapper;
 using MusicReview.Auth;
 using MusicReview.Domain.Models.AlbumEntities;
-using MusicReview.DTOs;
+using MusicReview.Domain.DTOs;
 
 namespace MusicReview.Domain.AutoMapper;
 

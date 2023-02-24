@@ -5,7 +5,7 @@ using MusicReview.Applications.Applications;
 using MusicReview.Domain.Models.Base;
 using MusicReview.Domain.Models.Responses;
 using AutoMapper;
-using MusicReview.DTOs;
+using MusicReview.Domain.DTOs;
 using MongoDB.Driver;
 using MusicReview.Domain.Models.AlbumEntities;
 using MusicReview.Domain.Services.ModelServices;

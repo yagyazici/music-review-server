@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-        <ProjectReference Include="..\MusicReview.Applications\MusicReview.Applications.csproj" />
+    <ProjectReference Include="..\MusicReview.Applications\MusicReview.Applications.csproj" />
   </ItemGroup>
 
 </Project>

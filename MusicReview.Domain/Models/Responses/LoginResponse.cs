@@ -1,5 +1,5 @@
 using MusicReview.Auth;
-using MusicReview.DTOs;
+using MusicReview.Domain.DTOs;
 
 namespace MusicReview.Domain.Models.Responses;
 

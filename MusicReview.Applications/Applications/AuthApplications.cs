@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using MusicReview.Domain.Settings;
-using MusicReview.DTOs;
+using MusicReview.Domain.DTOs;
 using MusicReview.Auth;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.UserServices;
