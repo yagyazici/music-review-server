@@ -1,6 +1,6 @@
-namespace MusicReview.Domain.Models.Spotify;
+namespace MusicReview.Domain.Models.Spotify.Common;
 
-public class Image
+public class SpotifyImage
 {
     public string url { get; set; }
     public int height { get; set; }

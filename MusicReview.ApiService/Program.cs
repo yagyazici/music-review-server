@@ -10,7 +10,6 @@ using MusicReview.Infrastructure;
 using Microsoft.Extensions.FileProviders;
 using MusicReview.Applications;
 using MusicReview.Integration;
-using MusicReview.Integration.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,7 +52,8 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>{
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
     options.TokenValidationParameters = new TokenValidationParameters{
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
@@ -62,6 +62,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateAudience = false
     };
 });
+
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     policy

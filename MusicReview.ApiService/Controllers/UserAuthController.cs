@@ -150,8 +150,5 @@ public class UserAuthController : ControllerBase
 
     [HttpDelete, Authorize]
     public async Task<Response> DeleteAllNotifications() => await _authService.DeleteAllNotifications();
-
-    [HttpGet]
-    public async Task<string> RefreshToken() => await _spotifyRefreshToken.RefreshToken();
     #endregion
 }

@@ -1,9 +1,8 @@
 using System.Net.Http.Headers;
-using System.Net.Mime;
-using System.Text;
-using System.Text.Json;
 using Microsoft.Extensions.Options;
+using MusicReview.Domain.Models.Spotify.RefreshToken;
 using MusicReview.Domain.Settings;
+using Newtonsoft.Json;
 
 namespace MusicReview.Integration.Services;
 
@@ -20,32 +19,26 @@ public class SpotifyRefreshToken
         _httpClient = httpClient;
     }
 
-    public async Task<string> RefreshToken()
+    public async Task<RefreshToken> RefreshToken()
     {
-        var query = "https://accounts.spotify.com/api/token";
-
-        var values = new Dictionary<string, string>
+        var body = new Dictionary<string, string>
         {
-            {"Authorization", $"Basic {_spotifySettings.Value.Base_64}"},
-            {"Content-Type", "application/x-www-form-urlencoded"}
+            {"grant_type", "refresh_token"},
+            {"refresh_token", _spotifySettings.Value.RefreshToken}
+        };
+    
+        HttpRequestMessage request = new HttpRequestMessage 
+        {
+            Method = HttpMethod.Post,
+            Content = new FormUrlEncodedContent(body),
         };
 
-        var body = new List<KeyValuePair<string, string>>
-        {
-            new KeyValuePair<string, string>("grant_type", "refresh_token"),
-            new KeyValuePair<string, string>("refresh_token", $"{_spotifySettings.Value.RefreshToken}")
-        };
-
-        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, query);
-
-        request.RequestUri = new Uri(query);
-        request.Headers.Add("Authorization", $"Basic {_spotifySettings.Value.Base_64}");
-        request.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-        
-        // _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", _spotifySettings.Value.Base_64);
 
         var res = await _httpClient.SendAsync(request);
-        Console.WriteLine(res);
-        return await res.Content.ReadAsStringAsync();
+        var resString = await res.Content.ReadAsStringAsync();
+        var token = JsonConvert.DeserializeObject<RefreshToken>(resString);
+        return token;
     }
 }

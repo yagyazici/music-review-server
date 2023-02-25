@@ -1,8 +1,8 @@
 namespace MusicReview.Domain.Models.Spotify.CurrentSong;
 
-public class CurrentSong
+public class SpotifyCurrentSong
 {
     public bool is_playing { get; set; }
-    public Item item { get; set; }
+    public CurrentSongItem item { get; set; }
 }
 
