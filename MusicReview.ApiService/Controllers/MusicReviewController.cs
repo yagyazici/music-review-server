@@ -3,6 +3,7 @@ using MusicReview.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using MusicReview.Domain.Models.Base;
 using MusicReview.Domain.Services.ModelServices;
+using MusicReview.Domain.Auth;
 
 namespace MusicReview.ApiService.Controllers;
 
@@ -54,6 +55,10 @@ public class MusicReviewController : ControllerBase
     
     [HttpPost, Authorize]
     public async Task<Response> ToggleLikedReview(string reviewId) => await _musicService.ToggleLikedReview(reviewId);
+
+    [HttpPost, Authorize]
+    public async Task<Response> Reply(Reply reply, string reviewId) => await _musicService.Reply(reply, reviewId);
+    // ^Test this feature
     #endregion
 
     #region DeleteRequests

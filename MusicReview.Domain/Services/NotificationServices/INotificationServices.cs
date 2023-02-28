@@ -1,4 +1,4 @@
-using MusicReview.Auth;
+using MusicReview.Domain.Auth;
 using MusicReview.Domain.DTOs;
 
 namespace MusicReview.Domain.NotificationServices;

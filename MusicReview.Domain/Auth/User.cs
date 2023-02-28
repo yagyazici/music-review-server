@@ -1,7 +1,7 @@
 using MusicReview.Domain.DTOs;
 using MusicReview.Domain.Models.Base;
 
-namespace MusicReview.Auth;
+namespace MusicReview.Domain.Auth;
 
 public class User : MongoEntity
 {

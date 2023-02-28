@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using MusicReview.Domain.Settings;
 using MusicReview.Domain.DTOs;
-using MusicReview.Auth;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.UserServices;
+using MusicReview.Domain.Auth;
 
 namespace MusicReview.Applications.Applications;
 

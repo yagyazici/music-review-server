@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Http;
-using MusicReview.Auth;
 using MusicReview.Domain.UserServices;
-using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace MusicReview.Infrastructure.Services.UserServices;

@@ -1,4 +1,3 @@
-using MusicReview.Auth;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.Services.HubServices;
 using MusicReview.Applications.Applications;
@@ -10,6 +9,7 @@ using MongoDB.Driver;
 using MusicReview.Domain.Models.AlbumEntities;
 using MusicReview.Domain.Services.ModelServices;
 using MusicReview.Domain.NotificationServices;
+using MusicReview.Domain.Auth;
 
 namespace MusicReview.Applications.Services;
 

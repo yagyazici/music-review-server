@@ -53,8 +53,8 @@ public class SpotifyClient : ISpotifyClient
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var res = await _httpClient.SendAsync(request);
         var resString = await res.Content.ReadAsStringAsync();
-        var albums = JsonConvert.DeserializeObject<SpotifySearch>(resString);
-        return albums.albums.items;
+        var searchs = JsonConvert.DeserializeObject<SpotifySearch>(resString);
+        return searchs.albums.items;
     }
 
     public async Task<SpotifyAlbum> GetAlbum(string albumId, string accessToken)

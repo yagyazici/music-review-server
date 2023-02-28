@@ -5,9 +5,9 @@ using System.Net.Http.Headers;
 using MusicReview.Domain.Models.Responses;
 using MusicReview.Domain.DTOs;
 using MusicReview.Domain.Models.AlbumEntities;
-using MusicReview.Auth;
 using MusicReview.Domain.Services.ModelServices;
 using MusicReview.Integration.Services;
+using MusicReview.Domain.Auth;
 
 namespace MusicReview.ApiService.Controllers;
 

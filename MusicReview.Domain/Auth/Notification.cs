@@ -1,7 +1,7 @@
 using MusicReview.Domain.Models.Base;
 using MusicReview.Domain.DTOs;
 
-namespace MusicReview.Auth;
+namespace MusicReview.Domain.Auth;
 
 public class Notification : MongoEntity
 {

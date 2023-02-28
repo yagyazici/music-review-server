@@ -1,4 +1,4 @@
-namespace MusicReview.Auth;
+namespace MusicReview.Domain.Auth;
 
 public class Follingers
 {

@@ -9,6 +9,7 @@ using MusicReview.Domain.Services;
 using MusicReview.Domain.Services.HubServices;
 using MusicReview.Domain.Services.ModelServices;
 using MusicReview.Domain.DTOs;
+using MusicReview.Domain.Auth;
 
 namespace MusicReview.Applications.Services;
 
@@ -121,5 +122,19 @@ public class MusicService : IMusicService
             return new Success<string>(review.AlbumName, "updated");
         }
         return new Fail<bool>(false, "not correct author");
+    }
+
+    public async Task<Response> Reply(Reply reply, string reviewId)
+    {
+        var user = await _authApplications.GetCurrentUser();
+        var fromUser = _mapper.Map<UserProfileDTO>(user);
+        var review = await _mongoRepository.GetByIdAsync(reviewId);
+        review.Replies.Add(reply);
+        await _mongoRepository.UpdateAsync(review);
+        if (fromUser.Id != review.Author.Id)
+        {
+            await _notificationService.SendNotification(review.Author.Id, fromUser, "reply");
+        }
+        return new Success<string>(reply.Id, "replied");
     }
 }

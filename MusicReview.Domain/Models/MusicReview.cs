@@ -1,5 +1,6 @@
 using MusicReview.Domain.Models.Base;
 using MusicReview.Domain.DTOs;
+using MusicReview.Domain.Auth;
 
 namespace MusicReview.Domain.Models;
 
@@ -16,5 +17,6 @@ public class Review : MongoEntity
     public DateTime PublishedDate { get; set; }
     public bool Edited { get; set; } = false;
     public DateTime EditedDate { get; set; }
-    public List<string> Likes { get; set; } = new List<string>();
+    public List<string> Likes { get; set; } = new();
+    public List<Reply> Replies { get; set; } = new();
 }

@@ -1,10 +1,10 @@
 using MongoDB.Bson;
-using MusicReview.Auth;
 using MusicReview.Domain.Models.Base;
 using MusicReview.Domain.NotificationServices;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.Services.HubServices;
 using MusicReview.Domain.DTOs;
+using MusicReview.Domain.Auth;
 
 namespace MusicReview.Infrastructure.Services.NotificationServices;
 

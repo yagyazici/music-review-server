@@ -1,12 +1,12 @@
 using AutoMapper;
 using MusicReview.Applications.Applications;
-using MusicReview.Auth;
 using MusicReview.Domain.Models.Base;
 using MusicReview.Domain.Models.Responses;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.Services.HubServices;
 using MusicReview.Domain.Services.ModelServices;
 using MusicReview.Domain.DTOs;
+using MusicReview.Domain.Auth;
 
 namespace MusicReview.Applications.Services;
 

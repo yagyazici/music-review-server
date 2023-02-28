@@ -1,3 +1,4 @@
+using MusicReview.Domain.Auth;
 using MusicReview.Domain.Models;
 using MusicReview.Domain.Models.Base;
 
@@ -14,4 +15,5 @@ public interface IMusicService
     Task<Response> Post(Review review);
     Task<Response> ToggleLikedReview(string reviewId);
     Task<Response> Delete(string id);
+    Task<Response> Reply(Reply reply, string reviewId);
 }
