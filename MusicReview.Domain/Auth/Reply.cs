@@ -6,5 +6,5 @@ public class Reply : MongoEntity
 {
     public UserProfileDTO User { get; set; }
     public string Comment { get; set; }
-    public DateTime NotificationDate { get; set; }
+    public DateTime ReplyDate { get; set; }
 }

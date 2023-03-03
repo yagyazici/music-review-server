@@ -60,6 +60,4 @@ public class GenericMongoRepository<TEntity> : IGenericMongoRepository<TEntity> 
     {
         await _collection.ReplaceOneAsync(x => x.Id == entity.Id, entity);
     }
-
-    
 }

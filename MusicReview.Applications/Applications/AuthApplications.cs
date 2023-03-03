@@ -11,6 +11,7 @@ using MusicReview.Domain.DTOs;
 using MusicReview.Domain.Services;
 using MusicReview.Domain.UserServices;
 using MusicReview.Domain.Auth;
+using MusicReview.Domain.Models.Base;
 
 namespace MusicReview.Applications.Applications;
 
@@ -29,6 +30,7 @@ public class AuthApplications
         _tokenSettings = tokenSettings;
         _httpUserService = httpUserService;
     }
+    
     public AuthToken CreateToken(User user)
     {
         string userStr = JsonConvert.SerializeObject(user);

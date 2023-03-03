@@ -40,7 +40,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => 
+builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
@@ -54,7 +54,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
-    options.TokenValidationParameters = new TokenValidationParameters{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
             .GetBytes(builder.Configuration.GetSection("TokenSettings:Token").Value)),
