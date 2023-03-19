@@ -65,9 +65,6 @@ public class MusicService : IMusicService
     public async Task<List<Review>> GetAlbumReviews(string albumId) =>
         await _mongoRepository.FilterAsync(review => review.AlbumId == albumId);
 
-    public async Task<List<Review>> GetUserAlbumReviews(string userId) =>
-        await _mongoRepository.FilterAsync(review => review.Author.Id == userId);
-
     public async Task<List<Review>> GetUserFeed()
     {
         var user = await _authApplications.GetCurrentUser();
@@ -124,11 +121,16 @@ public class MusicService : IMusicService
         return new Fail<bool>(false, "not correct author");
     }
 
-    public async Task<Response> Reply(Reply reply, string reviewId)
+    public async Task<Response> Reply(string comment, string reviewId)
     {
         var user = await _authApplications.GetCurrentUser();
         var fromUser = _mapper.Map<UserProfileDTO>(user);
         var review = await _mongoRepository.GetByIdAsync(reviewId);
+        Reply reply = new()
+        {
+            User = fromUser,
+            Comment = comment
+        };
         review.Replies.Add(reply);
         await _mongoRepository.UpdateAsync(review);
         if (fromUser.Id != review.Author.Id)
@@ -136,5 +138,19 @@ public class MusicService : IMusicService
             await _notificationService.SendNotification(review.Author.Id, fromUser, "reply");
         }
         return new Success<string>(reply.Id, "replied");
+    }
+
+    public async Task<Response> DeleteReply(string reviewId, string replyId)
+    {
+        var user = await _authApplications.GetCurrentUser();
+        var review = await _mongoRepository.GetByIdAsync(reviewId);
+        var reply = review.Replies.FirstOrDefault(reply => reply.Id == replyId);
+        if (reply.User.Id == user.Id)
+        {
+            review.Replies = review.Replies.Where(reply => reply.Id != replyId).ToList();
+            await _mongoRepository.UpdateAsync(review);
+            return new Success<string>(reply.Id, "deleted reply");
+        }
+        return new Fail<bool>(false, "not correct user");
     }
 }

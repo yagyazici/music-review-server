@@ -24,7 +24,7 @@ public class MusicReviewController : ControllerBase
     }
 
     #region PutRequests
-    [HttpPut]
+    [HttpPut, Authorize]
     public async Task<Response> Put(string id, int newRate, string newThoughts) =>
         await _musicService.Put(id, newRate, newThoughts);
     #endregion
@@ -37,7 +37,7 @@ public class MusicReviewController : ControllerBase
     public async Task<List<Review>> GetAlbumReviews(string albumId) => await _musicService.GetAlbumReviews(albumId);
 
     [HttpGet]
-    public async Task<List<Review>> GetUserAlbumReviews(string userId) => await _musicService.GetUserAlbumReviews(userId);
+    public async Task<List<Review>> GetUserAlbumReviews(string userId) => await _musicAuthService.GetUserAlbumReviews(userId);
 
     [HttpGet]
     public async Task<bool> AlbumReviewCheck(string albumId) => await _musicService.AlbumReviewCheck(albumId);
@@ -52,17 +52,20 @@ public class MusicReviewController : ControllerBase
     #region PostRequests
     [HttpPost, Authorize]
     public async Task<Response> Post(Review review) => await _musicService.Post(review);
-    
+
     [HttpPost, Authorize]
     public async Task<Response> ToggleLikedReview(string reviewId) => await _musicService.ToggleLikedReview(reviewId);
 
     [HttpPost, Authorize]
-    public async Task<Response> Reply(Reply reply, string reviewId) => await _musicService.Reply(reply, reviewId);
-    // ^Test this feature
+    public async Task<Response> Reply(string comment, string reviewId) => await _musicService.Reply(comment, reviewId);
     #endregion
 
     #region DeleteRequests
-    [HttpDelete]
+    [HttpDelete, Authorize]
     public async Task<Response> Delete(string id) => await _musicService.Delete(id);
+
+    [HttpDelete, Authorize]
+    public async Task<Response> DeleteReply(string reviewId, string replyId) => 
+        await _musicService.DeleteReply(reviewId, replyId);
     #endregion
 }
