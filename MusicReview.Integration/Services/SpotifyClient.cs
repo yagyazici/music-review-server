@@ -21,7 +21,7 @@ public class SpotifyClient : ISpotifyClient
     }
 
     public async Task<SpotifyCurrentSong> CurrentSong(string accessToken)
-    {   
+    {
         var url = new UriBuilder(_httpClient.BaseAddress.AbsoluteUri + "/me/player/currently-playing");
         url.Query = "market=gb";
 
@@ -60,7 +60,7 @@ public class SpotifyClient : ISpotifyClient
     public async Task<SpotifyAlbum> GetAlbum(string albumId, string accessToken)
     {
         var url = new UriBuilder(_httpClient.BaseAddress.AbsoluteUri + $"/albums/{albumId}");
-        
+
         url.Query = "market=gb";
 
         HttpRequestMessage request = new HttpRequestMessage
@@ -79,7 +79,7 @@ public class SpotifyClient : ISpotifyClient
     public async Task<SpotifyArtist> GetArtist(string artistId, string accessToken)
     {
         var url = new UriBuilder(_httpClient.BaseAddress.AbsoluteUri + $"/artists/{artistId}");
-        
+
         url.Query = "market=gb";
 
         HttpRequestMessage request = new HttpRequestMessage
@@ -98,7 +98,7 @@ public class SpotifyClient : ISpotifyClient
     public async Task<List<GetArtistAlbumsItem>> GetArtistAlbums(string artistId, string type, string accessToken)
     {
         var url = new UriBuilder(_httpClient.BaseAddress.AbsoluteUri + $"/artists/{artistId}/albums");
-        
+
         url.Query = $"market=gb&include_groups={type}";
 
         HttpRequestMessage request = new HttpRequestMessage
@@ -112,5 +112,24 @@ public class SpotifyClient : ISpotifyClient
         var resString = await res.Content.ReadAsStringAsync();
         var albums = JsonConvert.DeserializeObject<GetArtistAlbums>(resString);
         return albums.items;
+    }
+
+    public async Task<List<SearchItem>> GetNewReleases(string accessToken)
+    {
+        var url = new UriBuilder(_httpClient.BaseAddress.AbsoluteUri + "/browse/new-releases");
+
+        url.Query = $"country=gb";
+
+        HttpRequestMessage request = new HttpRequestMessage
+        {
+            RequestUri = url.Uri,
+            Method = HttpMethod.Get
+        };
+
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        var res = await _httpClient.SendAsync(request);
+        var resString = await res.Content.ReadAsStringAsync();
+        var searchs = JsonConvert.DeserializeObject<SpotifySearch>(resString);
+        return searchs.albums.items;
     }
 }

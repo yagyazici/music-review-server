@@ -12,4 +12,5 @@ public interface ISpotifyClient
     Task<SpotifyAlbum> GetAlbum(string albumId, string accessToken);
     Task<SpotifyArtist> GetArtist(string artistId, string accessToken);
     Task<List<GetArtistAlbumsItem>> GetArtistAlbums(string artistId, string type, string accessToken);
+    Task<List<SearchItem>> GetNewReleases(string accessToken);
 }

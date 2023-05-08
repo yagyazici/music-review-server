@@ -29,22 +29,26 @@ public class SpotifyController : ControllerBase
     public async Task<RefreshToken> RefreshToken() => await _refreshToken.RefreshToken();
 
     [HttpGet]
-    public async Task<SpotifyCurrentSong> CurrentSong(string accessToken) => 
+    public async Task<SpotifyCurrentSong> CurrentSong([FromHeader] string accessToken) =>
         await _spotifyClient.CurrentSong(accessToken);
 
     [HttpGet]
-    public async Task<List<SearchItem>> SearchAlbum(string query, string accessToken) => 
+    public async Task<List<SearchItem>> SearchAlbum([FromHeader] string accessToken, string query) =>
         await _spotifyClient.SearchAlbum(query, accessToken);
 
     [HttpGet]
-    public async Task<SpotifyAlbum> GetAlbum(string albumId, string accessToken) => 
+    public async Task<SpotifyAlbum> GetAlbum([FromHeader] string accessToken, string albumId) =>
         await _spotifyClient.GetAlbum(albumId, accessToken);
 
     [HttpGet]
-    public async Task<SpotifyArtist> GetArtist(string artistId, string accessToken) => 
+    public async Task<SpotifyArtist> GetArtist([FromHeader] string accessToken, string artistId) =>
         await _spotifyClient.GetArtist(artistId, accessToken);
 
     [HttpGet]
-    public async Task<List<GetArtistAlbumsItem>> GetArtistAlbums(string artistId, string type, string accessToken) =>
+    public async Task<List<GetArtistAlbumsItem>> GetArtistAlbums([FromHeader] string accessToken, string artistId, string type) =>
         await _spotifyClient.GetArtistAlbums(artistId, type, accessToken);
+
+    [HttpGet]
+    public async Task<List<SearchItem>> GetNewReleases([FromHeader] string accessToken) =>
+        await _spotifyClient.GetNewReleases(accessToken);
 }

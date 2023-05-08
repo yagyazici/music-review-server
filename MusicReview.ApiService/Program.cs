@@ -16,14 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSettings(builder);
 
 // Add services to the container.
-
 builder.Services.AddIntegration();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddApplicationsServices();
 
 builder.Services.AddHttpContextAccessor();
-
 
 builder.Services.AddControllers().AddJsonOptions(
     opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null
