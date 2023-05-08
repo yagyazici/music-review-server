@@ -8,5 +8,4 @@ public class CurrentUserDTO
     public string ProfilePicture { get; set; }
     public string Bio { get; set; }
     public DateTime BirthDate { get; set; }
-    public DateTime TokenExpires { get; set; }
 }
