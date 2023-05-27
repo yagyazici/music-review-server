@@ -52,7 +52,7 @@ public class UserAuthController : ControllerBase
                 {
                     file.CopyTo(stream);
                 }
-
+                await _musicAuthService.UpdateReviewProfileImages(dbPath);
                 return await _authService.UploadProfileImage(dbPath);
             }
             else
