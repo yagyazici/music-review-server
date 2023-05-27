@@ -72,4 +72,14 @@ public class MusicAuthService : IMusicAuthService
         reviews = reviews.Select(review => { review.Author = userDto; return review; }).ToList();
         return reviews;
     }
+
+    public async Task UpdateReviewProfileImages(string databasePath)
+    {
+        var user = await _authApplications.GetCurrentUser();
+        var reviews = await _reviewRepository.FilterAsync(review => review.Author.Id == user.Id);
+        reviews.Select(review => review.Author.ProfilePicture = databasePath).ToList();
+        reviews.ForEach(review => {
+            _reviewRepository.UpdateAsync(review);
+        });
+    }
 }

@@ -10,4 +10,5 @@ public interface IMusicAuthService
     Task<Response> ToggleUserLikedAlbum(AlbumDTO likedAlbum);
     Task<int> GetAlbumLikedCount(string albumId);
     Task<List<Review>> GetUserAlbumReviews(string userId);
+    Task UpdateReviewProfileImages(string databasePath);
 }
